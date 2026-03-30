@@ -1,0 +1,25 @@
+{
+    "name": "biz-lab/active-mobility-isochrones",
+    "description": "Calcul des zones géographiques accessibles plus rapidement en mobilité active (marche, vélo, VAE) qu'en voiture, basé sur les données IGN Géoplateforme.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "mobilité",
+        "isochrone",
+        "vélo",
+        "marche",
+        "géographie",
+        "IGN",
+        "transport",
+        "cartographie"
+    ],
+    "homepage": "https://github.com/biz-lab/active-mobility-isochrones",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ActiveMobilityIsochrones\\": "src/"
+        }
+    }
+}
