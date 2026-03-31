@@ -86,7 +86,7 @@ active-mobility-isochrones/
 
 Estimer les zones accessibles plus rapidement en mobilité active (marche, vélo, vélo électrique) qu'en voiture revient à chercher les frontières au-delà desquelles le temps d'accès en voiture devient inférieur à celui en mobilité active.
 
-Ce calcul est nécessairement dichotomique : les données disponibles sont éparses, les temps de trajet par type de mobilité pour des points donnés, et non des fonctions continues pour lesquelles on pourrait résoudre mathématiquement la frontière en cherchant `TempsDeTrajetVoiture(x, y) = TempsDeTrajetMobilitéActive(x, y)`.
+Ce calcul est nécessairement dichotomique : les données disponibles sont discrètes (au sens mathématique), les temps de trajet par type de mobilité pour des points donnés, et non des fonctions continues pour lesquelles on pourrait résoudre mathématiquement la frontière en cherchant `TempsDeTrajetVoiture(x, y) = TempsDeTrajetMobilitéActive(x, y)`.
 
 #### Choix entre requêtes isochrones et point-à-point
 
