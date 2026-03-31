@@ -30,7 +30,7 @@ Les zones colorées sur la carte représentent :
 ### Lancement rapide
 
 ```bash
-git clone https://github.com/biz-lab/active-mobility-isochrones.git
+git clone https://github.com/Tous-en-Mobilite-Active/active-mobility-isochrones.git
 cd active-mobility-isochrones
 php -S localhost:8000 -t exemple/
 ```
@@ -40,7 +40,7 @@ Ouvrez ensuite [http://localhost:8000](http://localhost:8000) dans votre navigat
 ### Intégration dans un projet existant
 
 ```bash
-composer require biz-lab/active-mobility-isochrones
+composer require Tous-en-Mobilite-Active/active-mobility-isochrones
 ```
 
 ```php
