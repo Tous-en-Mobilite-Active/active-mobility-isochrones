@@ -160,7 +160,7 @@ class GeoManage extends GeoCompute {
 			'computeDetailLevel' => $this->computeDetailLevel,
 			'continueCompute' => '1',
 		]);
-		header('Location: index.php?' . $params);
+		header('Location: computeEndPoint.php?' . $params);
 		exit;
 	}
 

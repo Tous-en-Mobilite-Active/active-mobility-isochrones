@@ -118,14 +118,6 @@ async function submitForm() {
 	document.getElementById('formObj').submit();
 }
 
-// Afficher/cacher la section de partage
-function showShareSection() {
-	document.getElementById('share-section').classList.add('active');
-}
-function hideShareSection() {
-	document.getElementById('share-section').classList.remove('active');
-}
-
 // Copier l'URL de partage
 function copyShareUrl() {
 	const shareUrl = document.getElementById('share-url');
@@ -283,7 +275,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('address').addEventListener('input', function () {
 		clearTimeout(autocompleteTimeout);
 		const val = this.value;
-		hideShareSection();
 		document.getElementById('latitude').value = '';
 		document.getElementById('longitude').value = '';
 		closeAllLists();
@@ -337,12 +328,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			const waitInput = document.getElementById('waitForTheCalculationToFinish');
 			if (waitInput && waitInput.value) {
+				// Déclencher le calcul en arrière-plan si l'URL est fournie
+				const triggerInput = document.getElementById('triggerComputeUrl');
+				if (triggerInput && triggerInput.value) {
+					const formData = new FormData(document.getElementById('formObj'));
+					fetch(triggerInput.value, { method: 'POST', body: formData });
+				}
+				// Polling du statut en parallèle
 				await waitForCalculation(waitInput.value);
 			} else {
 				const latitude = document.getElementById('latitude').value;
 				const longitude = document.getElementById('longitude').value;
 				if (latitude && longitude && latitude !== '0' && longitude !== '0') {
-					showShareSection();
 					const pageMethod = document.getElementById('pageMethod').value;
 					if (pageMethod === 'post') { showMessage('Carte mise à jour avec succès !', 'success'); }
 				}

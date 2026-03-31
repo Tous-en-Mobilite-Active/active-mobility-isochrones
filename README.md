@@ -71,6 +71,7 @@ active-mobility-isochrones/
 ├── exemple/
 │   ├── index.php           # Page HTML (appelle GeoManage + affichage inline)
 │   ├── ajaxEndPoint.php    # Endpoint AJAX pour le polling de progression
+│   ├── computeEndPoint.php # Endpoint de calcul (déclenché par le JS)
 │   ├── script.js           # JavaScript (Leaflet, autocomplétion, polling)
 │   └── style.css           # Styles CSS
 ├── CONTRIBUTING.md

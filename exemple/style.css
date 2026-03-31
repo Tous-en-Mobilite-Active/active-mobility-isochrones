@@ -142,12 +142,13 @@ button.primary:hover {
 /* Carte */
 .map-container {
 	position: relative;
+	z-index: 0;
 	flex: 1;
 	background: #F8F9FA;
 }
 #map {
 	width: 100%;
-	height: 80vh;
+	height: 72vh;
 }
 
 /* Légende */
@@ -210,33 +211,6 @@ button.primary:hover {
 	color: #495057;
 }
 
-/* Section de partage */
-.share-section {
-	display: none;
-	margin-top: 15px;
-}
-.share-section.active {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	flex-wrap: wrap;
-}
-.share-label {
-	font-weight: 600;
-	color: #495057;
-	white-space: nowrap;
-}
-.share-url-container {
-	flex: 1;
-	display: flex;
-	gap: 10px;
-	min-width: 300px;
-}
-.share-url {
-	flex: 1;
-	font-family: monospace;
-}
-
 /* Messages */
 .info {
 	margin: 1em 0.5em;
@@ -267,7 +241,7 @@ button.primary:hover {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 300;
+	z-index: 400;
 }
 .loading-content {
 	background-color: white;
@@ -296,14 +270,14 @@ button.primary:hover {
 }
 
 /* Méthodologie */
-.methodology {
-	padding: 0 1em;
+.projet-info {
+	padding: 1em;
 	margin: 0;
 	font-size: 90%;
 }
-.methodology h2 { font-size: 1.2em; }
-.methodology h3 { font-size: 1em; }
-.methodology a { color: #000; }
+.projet-info h2 { font-size: 1.2em; }
+.projet-info h3 { font-size: 1em; }
+.projet-info a { color: #000; }
 
 /* Impression */
 @media print {

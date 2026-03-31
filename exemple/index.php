@@ -17,13 +17,21 @@ $app = new \ActiveMobilityIsochrones\GeoManage(
 	__DIR__ . '/temp/geoCache'
 );
 $app->readParameters(!empty($_POST) ? $_POST : $_GET);
-$app->run();
+
+// Vérifier si le résultat est déjà en cache
+$app->cacheGet();
+
+if ($app->getStatus() !== 'computed' && ($app->getLatitude() !== 0. || $app->getLongitude() !== 0.)) {
+	// Pas encore calculé : initialiser le statut 'computing' (le calcul sera déclenché par le JS)
+	$app->initComputing();
+}
 
 $isComputed = ($app->getStatus() === 'computed');
 $isComputing = ($app->getStatus() === 'computing');
 $cacheKey = $app->getCacheKey();
-$shareUrl = 'index.php?' . $cacheKey;
 $statusUrl = $isComputing ? 'ajaxEndPoint.php?' . $cacheKey . '=1' : '';
+// URL pour déclencher le calcul effectif en arrière-plan (POST via JS)
+$computeUrl = $isComputing ? 'computeEndPoint.php' : '';
 
 ?><!DOCTYPE html>
 <html lang="fr">
@@ -46,6 +54,7 @@ $statusUrl = $isComputing ? 'ajaxEndPoint.php?' . $cacheKey . '=1' : '';
 			<input type="hidden" id="longitude" name="longitude" value="<?= htmlspecialchars($app->getLongitude()) ?>">
 			<?php if ($isComputing): ?>
 			<input type="hidden" id="waitForTheCalculationToFinish" value="<?= htmlspecialchars($statusUrl) ?>">
+			<input type="hidden" id="triggerComputeUrl" value="<?= htmlspecialchars($computeUrl) ?>">
 			<?php endif; ?>
 			<input type="hidden" id="walkCoords" name="walkCoords" value="<?= htmlspecialchars($app->getWalkCoords()) ?>">
 			<input type="hidden" id="bikeCoords" name="bikeCoords" value="<?= htmlspecialchars($app->getBikeCoords()) ?>">
@@ -93,15 +102,6 @@ $statusUrl = $isComputing ? 'ajaxEndPoint.php?' . $cacheKey . '=1' : '';
 					</div>
 				</div>
 			</div>
-
-			<div id="share-section" class="share-section">
-				<span class="share-label">Partager cette carte :</span>
-				<div class="share-url-container">
-					<input type="text" id="share-url" class="share-url" readonly value="<?= htmlspecialchars($shareUrl) ?>">
-					<button class="copy-btn secondary-btn" id="copyShareBtn" title="Copier l'URL" type="button">&#x1F4CB;</button>
-					<button class="print-btn secondary-btn" id="printBtn" title="Imprimer la page" type="button">&#x1F5A8;&#xFE0F;</button>
-				</div>
-			</div>
 		</form>
 	</div>
 
@@ -136,20 +136,10 @@ $statusUrl = $isComputing ? 'ajaxEndPoint.php?' . $cacheKey . '=1' : '';
 		<?php endif; ?>
 	</div>
 
-	<div class="methodology">
-		<h2>Comment sont calculées les zones plus rapides ?</h2>
-		<div class="methodology-content">
-			<h3>Fonctionnement de l'algorithme</h3>
-			<p>Cet algorithme calcule les zones géographiques où la mobilité active (marche, vélo, vélo électrique) est plus rapide que la voiture pour rejoindre une destination. Il s'agit d'une comparaison des isochrones à pied, à vélo et à vélo électrique, versus en voiture. Il intègre les pénalités temporelles liées à chaque mode de transport : temps pour détacher et rattacher son vélo, temps pour rejoindre son véhicule et se garer.</p>
-			<p>Le calcul débute par la détermination d'une zone accessible en mobilité active durant le temps équivalent aux délais incompressibles de la voiture. L'algorithme procède ensuite de manière itérative : à chaque étape, il calcule simultanément la zone atteignable en mobilité active et celle accessible en voiture pour la même durée de trajet.</p>
-			<p>Pour optimiser les calculs, le territoire est divisé en hexagones de taille adaptée à la vitesse de déplacement. À chaque itération, seules les nouvelles zones où la mobilité active reste plus rapide sont conservées et ajoutées au résultat final. Le processus s'arrête lorsque la voiture devient plus rapide, quelle que soit la direction.</p>
-			<h3>Sources des données</h3>
-			<ul>
-				<li><strong>Géocodage</strong> : <a href="https://geoservices.ign.fr/documentation/services/services-geoplateforme/geocodage" target="_blank" rel="noopener">geoservices.ign.fr</a> pour l'auto-complétion des adresses</li>
-				<li><strong>Calcul d'itinéraires</strong> : <a href="https://geoservices.ign.fr/services-geoplateforme-itineraire" target="_blank" rel="noopener">geoservices.ign.fr</a> pour les isochrones et isodistances (piéton, vélo, vélo électrique, voiture)</li>
-				<li><strong>Cartographie</strong> : <a href="https://openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> pour l'affichage de la carte</li>
-			</ul>
-		</div>
+	<div class="projet-info">
+			<p>Cet outil est issu du projet <a href="https://tous-en-mobilite-active.fr">https://tous-en-mobilite-active.fr</a>, une initiative visant à promouvoir la mobilité active au quotidien.</p>
+			<p>Le code source de cet outil est disponible en open source sur GitHub à l'url <a href="https://github.com/Tous-en-Mobilite-Active/active-mobility-isochrones">https://github.com/Tous-en-Mobilite-Active/active-mobility-isochrones</a>.</p>
+			<p>Vous pouvez l'installer, l'étudier, l'adapter à vos besoins ou surtout contribuer à son amélioration. Toute participation est la bienvenue, que ce soit pour signaler un bug, proposer une idée ou soumettre du code.</p>
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
